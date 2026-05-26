@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
+import dynamic from 'next/dynamic'
 import '@/styles/globals.css'
 import ClientProviders from '@/components/providers/ClientProviders'
 import WhatsAppFloat from '@/components/effects/WhatsAppFloat'
 import ScrollToTop from '@/components/effects/ScrollToTop'
 import { SITE } from '@/lib/constants'
 import { createMetadata } from '@/lib/metadata'
+
+const CustomCursor = dynamic(() => import('@/components/effects/CustomCursor'), { ssr: false })
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -72,6 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${cormorant.variable} ${dmSans.variable} font-body antialiased`}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <ClientProviders>{children}</ClientProviders>
+        <CustomCursor />
         <WhatsAppFloat />
         <ScrollToTop />
       </body>

@@ -1,50 +1,53 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 })
-  const [hovering, setHovering] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const [hovered, setHovered] = useState(false)
+  const [hidden, setHidden] = useState(true)
 
   useEffect(() => {
-    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-    if (isTouch) return
+    // Only on fine pointer devices (desktop)
+    if (typeof window === 'undefined') return
+    if (window.matchMedia('(pointer: coarse)').matches) return
 
-    setVisible(true)
-
-    const onMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY })
+    const move = (e: MouseEvent) => {
+      setPos({ x: e.clientX, y: e.clientY })
+      setHidden(false)
     }
-
-    const onOver = (e: MouseEvent) => {
+    const over = (e: MouseEvent) => {
       const target = e.target as HTMLElement
-      setHovering(!!target.closest('a, button, [role="button"], input, select, textarea, label'))
+      setHovered(!!target.closest('a, button, [data-cursor="hover"], input, select, textarea, label'))
     }
+    const hide = () => setHidden(true)
+    const show = () => setHidden(false)
 
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseover', onOver)
+    document.addEventListener('mousemove', move)
+    document.addEventListener('mouseover', over)
+    document.addEventListener('mouseleave', hide)
+    document.addEventListener('mouseenter', show)
 
     return () => {
-      window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('mouseover', onOver)
+      document.removeEventListener('mousemove', move)
+      document.removeEventListener('mouseover', over)
+      document.removeEventListener('mouseleave', hide)
+      document.removeEventListener('mouseenter', show)
     }
   }, [])
 
-  if (!visible) return null
-
   return (
-    <div
-      className="pointer-events-none fixed left-0 top-0 z-[9999] mix-blend-difference"
-      style={{
-        transform: `translate(${position.x}px, ${position.y}px)`,
+    <motion.div
+      className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full bg-[#C9A84C] mix-blend-difference"
+      animate={{
+        x: pos.x - (hovered ? 20 : 4),
+        y: pos.y - (hovered ? 20 : 4),
+        width: hovered ? 40 : 8,
+        height: hovered ? 40 : 8,
+        opacity: hidden ? 0 : 1,
       }}
-    >
-      <div
-        className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold bg-gold transition-all duration-200 ${
-          hovering ? 'h-10 w-10 bg-transparent' : 'h-2 w-2'
-        }`}
-      />
-    </div>
+      transition={{ type: 'spring', stiffness: 800, damping: 40, mass: 0.3 }}
+    />
   )
 }
