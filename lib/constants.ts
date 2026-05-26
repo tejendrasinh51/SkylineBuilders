@@ -1,0 +1,20 @@
+export const SITE = {
+  name: 'Skyline Builders',
+  tagline: 'Premium residences for those who demand more.',
+  url: 'https://skylinebuilders.vercel.app',
+  address: 'Skyline House, Alkapuri, Vadodara — 390007',
+  phone: '+91 98765 43210',
+  phoneHref: 'tel:+919876543210',
+  email: 'hello@skylinebuilders.in',
+  whatsapp: '919876543210',
+  rera: 'PR/GJ/VADODARA/AAA/000001/180101',
+  hours: 'Mon–Sat 10am–7pm, Sun 11am–5pm',
+  hoursShort: 'Mon–Sat: 10am – 7pm · Sun: 11am – 5pm',
+  social: {
+    linkedin: 'https://linkedin.com/company/skylinebuildersvadodara',
+    instagram: 'https://instagram.com/skylinebuildersvadodara',
+    youtube: 'https://youtube.com/@skylinebuildersvadodara',
+    twitter: 'https://twitter.com/skylinebuildersvadodara',
+  },
+  nuvirexa: 'https://nuvirexa.com',
+} as const
