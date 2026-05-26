@@ -4,7 +4,6 @@ import { Award, Eye, Heart, Shield } from 'lucide-react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import SectionLabel from '@/components/ui/SectionLabel'
-import GoldDivider from '@/components/ui/GoldDivider'
 import { createMetadata } from '@/lib/metadata'
 
 export const metadata = createMetadata({
